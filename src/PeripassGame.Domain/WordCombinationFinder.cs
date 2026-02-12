@@ -1,15 +1,19 @@
-﻿namespace PeripassGame.Domain;
+namespace PeripassGame.Domain;
 
 public sealed class WordCombinationFinder(WordBank wordBank) {
   private readonly WordBank _wordBank = wordBank;
 
   public async Task<IReadOnlyList<string>> GetAllCombinationsAsync(FindOptions options) {
     var partials = _wordBank.Partials;
-    var results = new List<string>();
 
-    foreach (var target in _wordBank.Objectives) {
-      FindCombinationsRecursive(target, 0, [], partials, options.MaxCombinationLength, results);
-    }
+    var results = _wordBank.Objectives
+      .AsParallel()
+      .SelectMany(target => {
+        var list = new List<string>();
+        FindCombinationsRecursive(target, 0, [], partials, options.MaxCombinationLength, list);
+        return list;
+      })
+      .ToList();
 
     return results;
   }
