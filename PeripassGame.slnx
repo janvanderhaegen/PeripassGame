@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PeripassGame.Console/PeripassGame.Console.csproj" />
+    <Project Path="src/PeripassGame.Domain/PeripassGame.Domain.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PeripassGame.Tests/PeripassGame.Domain.Tests.csproj" />
+  </Folder>
+</Solution>
