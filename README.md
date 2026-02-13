@@ -1,43 +1,33 @@
-# Technical Developer test
+# Peripass Word Finder game
 
-In this developer test case, you're going to implement an algorithmn. The objective is to test your skills as a developer.
+This is a small developer test submission.
 
-Technologies that should be used:
+The solution has a small console app that demonstrates the original issue and some tests (I honestly really love test-driven development), both of which were initially stubbed out using AI (I use Cursor a *lot*). 
 
-- .NET
-- C#
+The domain project was handcoded (wow, oldskool) and has only three classes: `WordIndex` that prepares the large list of words, `WordCombinationFinder` which is the pattern matching algorithm and `FindOptions` for being a tiny bit mindful that requirements might change and we'll prefer backwards binary compatiliby when we do.
 
-Your code will be evaluated using the following criteria:
 
-- Correctness of the algorithm
-- Performance
-- Clean code
-- Seperation of concerns
+In my normal coding I also tend to keep my code fairly simple and readable, and steer away from introducing design patterns without a cause or introducing abstractions or interfaces in preparation for an unknown change in requirements in the future.   
 
-The way the code needs to be run, is not important. This can be as simple as a console app.
+After all, the best code is the code you didn't write (YAGNI). We can cross those bridges when we get there, for example by extracting an interface from a class at that point and writing a second implementation, or encapsulating more pattern validity logic into the `FindOptions`.
 
-Be mindful of changing requirements like a different maximum combination length, or a different source of the input data. Don't spend too much time on this exercise. 
+ 
+## If I had more time
+-  I don't feel comfortable submitting anything that would not have input validation, but it takes up too much space in my code blocks and makes the code less readable at a glance. I have some common patterns to reduce this to oneliners in small projects, or use FluentValidation, or both.
+-  Result pattern is more performant than throwing exceptions if we'd expect a large % of invalid input and performance really matters.
+-  Find a better name than `WordIndex`... `WordRepository`? `WordCombinationData`? `ConcatenationStation`?
 
-Feel free to send us a mail if you have any questions about the exercise.
 
-## Submitting the exercise
 
-The assignment can be submitted by sending us your solution through e-mail: 
-
-- Briefly write down where you would improve the code if you were given more time.
-- The solution may be sent as a link to your repository, as a zip file in the mail, or uploaded to a file hosting service (eg: wetransfer).
-
-## 6 letter words
+## Initial challenge: 6 letter words
 
 There's a file in the root of the repository, input.txt, that contains words of varying lengths (1 to 6 characters).
 
-Your objective is to show all combinations of those words that:
+My objective is to show all combinations of those words that:
 
 - Together form a word of 6 characters.
 - That combination must also be present in input.txt.
-
-You can start by only supporting combinations of two words and improve the algorithm at the end of the exercise to support any combinations.
-
+ 
 
 ### Example
 
