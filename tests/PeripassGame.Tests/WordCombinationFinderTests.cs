@@ -4,17 +4,12 @@ using Xunit.Abstractions;
 
 public class WordCombinationFinderTests(ITestOutputHelper _output) {
 
-  private static WordBank CreateWordBank(params string[] words) {
-    var set = words.ToHashSet(StringComparer.Ordinal);
-    var partials = set.Where(w => w.Length < 6).ToHashSet(StringComparer.Ordinal);
-    var objectives = set.Where(w => w.Length == 6).ToHashSet(StringComparer.Ordinal);
-    return new WordBank(partials, objectives);
-  }
+  private static WordIndex CreateWordBank(params string[] words) => WordIndex.Create(words);
 
   [Fact]
   public async Task GetAllCombinations_SingleSixLetterWordWithTwoPartials_FindsSingleMatch() {
-    var wordBank = CreateWordBank("foobar", "foo", "bar");
-    var finder = new WordCombinationFinder(wordBank);
+    var index = CreateWordBank("foobar", "foo", "bar");
+    var finder = new WordCombinationFinder(index);
 
     var result = await finder.GetAllCombinationsAsync(new FindOptions());
 
@@ -24,8 +19,8 @@ public class WordCombinationFinderTests(ITestOutputHelper _output) {
 
   [Fact]
   public async Task GetAllCombinations_MultiplePartialsFormingMultiplePairs_FindsAllMatches() {
-    var wordBank = CreateWordBank("foobar", "foobaz", "fo", "o", "bar", "baz", "foo");
-    var finder = new WordCombinationFinder(wordBank);
+    var index = CreateWordBank("foobar", "foobaz", "fo", "o", "bar", "baz", "foo");
+    var finder = new WordCombinationFinder(index);
 
     var result = await finder.GetAllCombinationsAsync(new FindOptions());
 
@@ -38,8 +33,8 @@ public class WordCombinationFinderTests(ITestOutputHelper _output) {
 
   [Fact]
   public async Task GetAllCombinations_PairsAndTripletsFormMatches_FindsAllCombinations() {
-    var wordBank = CreateWordBank("foobar", "fo", "o", "bar", "foo", "fizz");
-    var finder = new WordCombinationFinder(wordBank);
+    var index = CreateWordBank("foobar", "fo", "o", "bar", "foo", "fizz");
+    var finder = new WordCombinationFinder(index);
 
     var result = await finder.GetAllCombinationsAsync(new FindOptions());
 
@@ -50,8 +45,8 @@ public class WordCombinationFinderTests(ITestOutputHelper _output) {
 
   [Fact]
   public async Task GetAllCombinations_MaxCombinationLengthTwo_ReturnsOnlyPairs() {
-    var wordBank = CreateWordBank("foobar", "fo", "o", "bar", "foo");
-    var finder = new WordCombinationFinder(wordBank);
+    var index = CreateWordBank("foobar", "fo", "o", "bar", "foo");
+    var finder = new WordCombinationFinder(index);
 
     var result = await finder.GetAllCombinationsAsync(new FindOptions(MaxCombinationLength: 2));
 
@@ -62,11 +57,8 @@ public class WordCombinationFinderTests(ITestOutputHelper _output) {
   [Fact]
   //not really a test but since everything is working I need a benchmark before I refactor for speed =)
   public async Task GetAllCombinations_LargeHardcodedDataset_ConsistentResultsAndLogsExecutionTime() {
-    var words = LargeTestDataset;
-    var partials = words.Where(w => w.Length < 6).ToHashSet(StringComparer.Ordinal);
-    var objectives = words.Where(w => w.Length == 6).ToHashSet(StringComparer.Ordinal);
-    var wordBank = new WordBank(partials, objectives);
-    var finder = new WordCombinationFinder(wordBank);
+    var index = WordIndex.Create(LargeTestDataset);
+    var finder = new WordCombinationFinder(index);
 
     var options = new FindOptions(MaxCombinationLength: 6);
 

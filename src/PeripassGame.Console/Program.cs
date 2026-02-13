@@ -12,11 +12,10 @@ var words = lines
     .ToHashSet(StringComparer.Ordinal);
 
 var stopwatch = Stopwatch.StartNew();
-var partials = words.Where(w => w.Length < 6).ToHashSet(StringComparer.Ordinal);
-var objectives = words.Where(w => w.Length == 6).ToHashSet(StringComparer.Ordinal);
-var wordBank = new WordBank(partials, objectives);
-var finder = new WordCombinationFinder(wordBank);
-var combinations = await finder.GetAllCombinationsAsync( new FindOptions(MaxCombinationLength: 6));
+
+var index = WordIndex.Create(words);
+var finder = new WordCombinationFinder(index);
+var combinations = await finder.GetAllCombinationsAsync(new FindOptions());
 
 stopwatch.Stop();
 
