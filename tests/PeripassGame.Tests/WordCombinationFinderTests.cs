@@ -86,7 +86,7 @@ public class WordCombinationFinderTests(ITestOutputHelper _output) {
 
     stopwatch.Stop();
 
-    var expectedCount = counts[0];
+    var expectedCount = 4055;
     Assert.All(counts, c => Assert.Equal(expectedCount, c));
 
     var totalMs = stopwatch.ElapsedMilliseconds;
